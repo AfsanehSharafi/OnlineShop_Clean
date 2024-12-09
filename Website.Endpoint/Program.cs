@@ -1,5 +1,6 @@
 using Application.Interfaces.Contexts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Persistence.Contenxts;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,9 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 #region ConnectinString
 var connnection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DatabaseContext>(options =>
-    options.UseSqlServer(connnection));
+options.UseSqlServer(connnection));
 
-builder.Services.AddDbContext<IdentityDatabaseContext>(options => options.UseSqlServer(connnection));
+//builder.Services.AddDbContext<IdentityDatabaseContext>(options => options.UseSqlServer(connnection));
 #endregion
 
 // Add services to the container.
