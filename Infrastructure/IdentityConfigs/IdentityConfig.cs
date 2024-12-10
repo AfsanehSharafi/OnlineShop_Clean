@@ -15,11 +15,12 @@ namespace Infrastructure.IdentityConfigs
 
             string connection = configuration["ConnectionString:SqlServer"];
             services.AddDbContext<IdentityDatabaseContext>(options => options.UseSqlServer(connection));
-            services.AddIdentity<User, IdentityUser>()
+
+            services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityDatabaseContext>()
                 .AddDefaultTokenProviders()
-                .AddRoles<IdentityRole>();
-                //.AddErrorDescriber<CustomIdentityError>();
+                .AddRoles<IdentityRole>()
+            .AddErrorDescriber<CustomIdentityError>();
 
 
             services.Configure<IdentityOptions>(options =>
