@@ -22,13 +22,14 @@ namespace Infrastructure.MappingProfile
                 .ForMember(dest => dest.SubTypeCount, option =>
                  option.MapFrom(src => src.SubType.Count));
 
-            //CreateMap<CatalogType, MenuItemDto>()
-            //    .ForMember(dest => dest.Name, opt =>
-            //     opt.MapFrom(src => src.Type))
-            //    .ForMember(dest => dest.ParentId, opt =>
-            //     opt.MapFrom(src => src.ParentCatalogTypeId))
-            //    .ForMember(dest => dest.SubMenu, opt =>
-            //    opt.MapFrom(src => src.SubType));
+            CreateMap<CatalogType, MenuItemDto>()
+                .ForMember(dest => dest.Name, opt =>
+                 opt.MapFrom(src => src.Type))
+                .ForMember(dest => dest.ParentId, opt =>
+                 opt.MapFrom(src => src.ParentCatalogTypeId))
+                .ForMember(dest => dest.SubMenu, opt =>
+                opt.MapFrom(src => src.SubType));
+
             ////----------------------
             //// پروفایل مپ افزودن مورد جدید
             //CreateMap<CatalogItemFeature, AddNewCatalogItemFeature_dto>().ReverseMap();

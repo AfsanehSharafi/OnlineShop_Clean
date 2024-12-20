@@ -9,6 +9,8 @@ using Web.Endpoint.Hubs;
 using Rebus.Config;
 using Application.Visitors.VisitorOnline;
 using WebSite.EndPoint.Utilities.Middlewares;
+using Application.Catalogs.GetMenuItem;
+using Infrastructure.MappingProfile;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +18,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
+
 #region ConnectinString
+
+builder.Services.AddScoped<IDatabaseContext, DatabaseContext>();
 var connnection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DatabaseContext>(options =>
 options.UseSqlServer(connnection));
@@ -36,9 +42,13 @@ builder.Services.AddDbContext<IdentityDatabaseContext>(options => options.UseSql
 builder.Services.AddTransient(typeof(IMongoDbContext<>), typeof(MongoDbContext<>));
 builder.Services.AddTransient<ISaveVisitorInfoService, SaveVisitorInfoService>();
 builder.Services.AddTransient<IIVisitorOnlineService, VisitorOnlineService>();
+builder.Services.AddTransient<IGetMenuItemService, GetMenuItemService>();
 builder.Services.AddScoped<SaveVisitorFilter>();
 builder.Services.AddSignalR();
 
+builder.Services.AddAutoMapper(typeof(CatalogMappingProfile));
+
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -54,7 +64,6 @@ app.UseSetVisitorId();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -64,9 +73,14 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}"
 );
 
+app.UseRouting();
+
 app.MapRazorPages();
 app.MapHub<OnlineVisitorHub>("/chathub");
+
+app.UseAuthorization();
 
 
 
 app.Run();
+
