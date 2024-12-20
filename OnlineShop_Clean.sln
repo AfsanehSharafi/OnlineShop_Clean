@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Website.Endpoint", "Website
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Endpoint", "Endpoint\Web.Endpoint.csproj", "{734F9778-D520-4855-A169-CA6BAE05015B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admin.Endpoint", "Admin.Endpoint\Admin.Endpoint.csproj", "{A076C7AD-2221-4DD8-B89E-F448E2BFE0AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Admin.Endpoint", "Admin.Endpoint\Admin.Endpoint.csproj", "{A076C7AD-2221-4DD8-B89E-F448E2BFE0AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
