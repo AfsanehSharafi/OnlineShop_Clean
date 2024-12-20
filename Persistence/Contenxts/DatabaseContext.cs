@@ -1,13 +1,8 @@
 ﻿using Application.Interfaces.Contexts;
 using Domain.Attributes;
-using Domain.Users;
+using Domain.Catalogs;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Persistence.EntityConfigurations;
 
 namespace Persistence.Contenxts
 {
@@ -19,8 +14,8 @@ namespace Persistence.Contenxts
 
         }
 
-        //public DbSet<CatalogBrand> CatalogBrands { get; set; }
-        //public DbSet<CatalogType> CatalogTypes { get; set; }
+        public DbSet<CatalogBrand> CatalogBrands { get; set; }
+        public DbSet<CatalogType> CatalogTypes { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -29,21 +24,21 @@ namespace Persistence.Contenxts
             {
                 if (EntityType.ClrType.GetCustomAttributes(typeof(AuditableAttribute), true).Length > 0)
                 {
-                    builder.Entity(EntityType.Name).Property<DateTime>("InsertTime");
+                    builder.Entity(EntityType.Name).Property<DateTime>("InsertTime").HasDefaultValue(DateTime.Now);
                     builder.Entity(EntityType.Name).Property<DateTime?>("UpdateTime");
                     builder.Entity(EntityType.Name).Property<DateTime?>("RemoveTime");
-                    builder.Entity(EntityType.Name).Property<bool>("IsRemove");
+                    builder.Entity(EntityType.Name).Property<bool>("IsRemove").HasDefaultValue(false);
 
                 }
             }
-            //    foreach (var relationship in builder.Model.GetEntityTypes().
-            //   SelectMany(e => e.GetForeignKeys()))
-            //    {
-            //        relationship.DeleteBehavior = DeleteBehavior.Restrict;
-            //    }
-            //    builder.ApplyConfiguration(new CatalogBrandEntityTypeConfiguration());
-            //    builder.ApplyConfiguration(new CatalogTypeEntityTypeConfiguration());
-            //    DatabaseContextSeed.CatalogSeed(builder);
+            foreach (var relationship in builder.Model.GetEntityTypes().
+           SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+            builder.ApplyConfiguration(new CatalogBrandEntityTypeConfiguration());
+            builder.ApplyConfiguration(new CatalogTypeEntityTypeConfiguration());
+            //DataBaseContextSeed.CatalogSeed(builder);
 
             //DataBaseContextSeed.CatalogSeed(builder);
 

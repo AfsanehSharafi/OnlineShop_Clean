@@ -30,7 +30,7 @@ builder.Services.ConfigureApplicationCookie(option =>
     option.AccessDeniedPath = "/Account/AccessDenied";
     option.SlidingExpiration = true;
 });
-//builder.Services.AddDbContext<IdentityDatabaseContext>(options => options.UseSqlServer(connnection));
+builder.Services.AddDbContext<IdentityDatabaseContext>(options => options.UseSqlServer(connnection));
 #endregion
 
 builder.Services.AddTransient(typeof(IMongoDbContext<>), typeof(MongoDbContext<>));

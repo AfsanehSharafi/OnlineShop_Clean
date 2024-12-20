@@ -1,6 +1,11 @@
+using Application.Catalogs.CatalogTypes;
 using Application.Interfaces.Contexts;
 using Application.Visitors.GetTodayReport;
+using Infrastructure.MappingProfile;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Contenxts;
 using Persistence.Contenxts.MongoContext;
+using static Application.Catalogs.CatalogTypes.ICatalogTypeService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +13,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddTransient<IGetTodayReportService, GetTodayReportService>();
 builder.Services.AddTransient(typeof(IMongoDbContext<>), typeof(MongoDbContext<>));
+
+
+#region connection String SqlServer
+builder.Services.AddScoped<IDatabaseContext, DatabaseContext>();
+var connnection = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<DatabaseContext>(options =>
+options.UseSqlServer(connnection));
+#endregion
+
+
+
+//mapper
+builder.Services.AddAutoMapper(typeof(CatalogMappingProfile));
+builder.Services.AddTransient<ICatalogTypeService , CatalogTypeService>();
+
 
 var app = builder.Build();
 

@@ -1,15 +1,12 @@
-﻿using Domain.Users;
+﻿using Domain.Catalogs;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Interfaces.Contexts
 {
     public interface IDatabaseContext
     {
+        DbSet<CatalogBrand> CatalogBrands { get; }
+        DbSet<CatalogType> CatalogTypes { get; }
         int SaveChanges();
         int SaveChanges(bool acceptAllChangesOnSuccess);
 
