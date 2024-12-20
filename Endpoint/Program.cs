@@ -5,6 +5,10 @@ using Application.Interfaces.Contexts;
 using Persistence.Contenxts.MongoContext;
 using Application.Visitors.SaveVisitorInfo;
 using Web.Endpoint.Utilities.Filters;
+using Web.Endpoint.Hubs;
+using Rebus.Config;
+using Application.Visitors.VisitorOnline;
+using WebSite.EndPoint.Utilities.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,8 +34,10 @@ builder.Services.ConfigureApplicationCookie(option =>
 #endregion
 
 builder.Services.AddTransient(typeof(IMongoDbContext<>), typeof(MongoDbContext<>));
-builder.Services.AddTransient<ISaveVisitorInfoService , SaveVisitorInfoService>();
+builder.Services.AddTransient<ISaveVisitorInfoService, SaveVisitorInfoService>();
+builder.Services.AddTransient<IIVisitorOnlineService, VisitorOnlineService>();
 builder.Services.AddScoped<SaveVisitorFilter>();
+builder.Services.AddSignalR();
 
 
 var app = builder.Build();
@@ -44,6 +50,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSetVisitorId();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -54,6 +61,12 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
+
+app.MapRazorPages();
+app.MapHub<OnlineVisitorHub>("/chathub");
+
+
 
 app.Run();
